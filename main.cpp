@@ -5,13 +5,12 @@
 
 using namespace std;
 
-// Helper: Check if a string is a valid double format
 bool isValidDouble(const string& s) {
     int len = s.length();
     if (len == 0) return false;
 
     int i = 0;
-    if (s[i] == '+' || s[i] == '-') i++; // optional sign
+    if (s[i] == '+' || s[i] == '-') i++;
 
     bool hasDigitsBeforeDot = false;
     while (i < len && isdigit(s[i])) {
@@ -29,8 +28,7 @@ bool isValidDouble(const string& s) {
             i++;
         }
     }
-
-    // Valid if all characters are processed and digit rules are met
+    
     if (i != len) return false;
     if (hasDot && (!hasDigitsBeforeDot || !hasDigitsAfterDot)) return false;
     if (!hasDot && !hasDigitsBeforeDot) return false;
@@ -38,14 +36,12 @@ bool isValidDouble(const string& s) {
     return true;
 }
 
-// Helper: Remove leading zeros from integer part
 string trimLeadingZeros(const string& s) {
     int i = 0;
     while (i < s.length() && s[i] == '0') i++;
     return (i == s.length()) ? "0" : s.substr(i);
 }
 
-// Helper: Split into sign, integer part, and fractional part
 void splitNumber(const string& s, string& sign, string& intPart, string& fracPart) {
     int i = 0;
     sign = (s[0] == '+' || s[0] == '-') ? string(1, s[0]) : "+";
@@ -63,7 +59,6 @@ void splitNumber(const string& s, string& sign, string& intPart, string& fracPar
     intPart = trimLeadingZeros(intPart);
 }
 
-// Helper: Add two numeric strings (same length)
 string addStrings(const string& a, const string& b, int& carry) {
     string result = "";
     for (int i = a.length() - 1; i >= 0; i--) {
@@ -75,18 +70,15 @@ string addStrings(const string& a, const string& b, int& carry) {
     return result;
 }
 
-// Main addition function
 string addDoubles(const string& a, const string& b) {
     string signA, intA, fracA;
     string signB, intB, fracB;
     splitNumber(a, signA, intA, fracA);
     splitNumber(b, signB, intB, fracB);
 
-    // Pad fractional parts to equal length
     while (fracA.length() < fracB.length()) fracA += '0';
     while (fracB.length() < fracA.length()) fracB += '0';
 
-    // Pad integer parts to equal length
     while (intA.length() < intB.length()) intA = '0' + intA;
     while (intB.length() < intA.length()) intB = '0' + intB;
 
